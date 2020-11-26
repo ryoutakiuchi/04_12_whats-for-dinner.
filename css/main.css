@@ -1,0 +1,75 @@
+
+
+.title_box{
+    width: 920px;
+    background: url(../img/sm_2.png);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title{
+     font-family: "Helvetica Neue",
+    Arial,
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    Meiryo,
+    sans-serif;
+    font-size: 60px;
+    color: whitesmoke
+    
+}
+
+.subtitle{
+    color: whitesmoke;
+    font-size: 32px;
+    font-family: "Helvetica Neue",
+    Arial,
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    Meiryo,
+    sans-serif;
+}
+
+.main{
+    display: flex;
+    
+    
+}
+#output li {
+            /* background: #ccc; */
+            width: 400px;
+            height: 180px;
+        }
+
+#output li {
+    position: relative;
+    margin: 2em 0 2em 40px;
+    padding: 4px 15px;
+    background: #fff0c6;
+    border-radius: 30px;
+}
+#output li:before{font-family: FontAwesome;
+    content: "\f111";
+    position: absolute;
+    font-size: 15px;
+    left: -40px;
+    bottom: 0;
+    color: #fff0c6;
+}
+#output li:after{
+    font-family: FontAwesome;
+    content: "\f111";
+    position: absolute;
+    font-size: 23px;
+    left: -23px;
+    bottom: 0;
+    color: #fff0c6;
+}
+#output li p {
+    margin: 0; 
+    padding: 0;
+}

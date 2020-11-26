@@ -6,32 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>chatApp</title>
+    <link rel="stylesheet" href="css/main.css">
+
     <style>
-        #output li {
-            background: #ccc;
-            width: 120px;
-        }
+
     </style>
 </head>
 
 <body>
-    <h1>What's for dinner?</h1>
-    <!-- 入力場所を作成しよう -->
-    <ul>
-        <li>
-            <label for="name">日付</label> <input type="text" id="name">
-        </li>
-        <li>
-            <textarea name="" id="text" cols="30" rows="10"></textarea> </li>
 
-        <li>
-            <button id="send">send</button>
-        </li>
-    </ul>
+    <div class="title_box">
+        <h1 class=title>What's for dinner?</h1>
+        <p class=subtitle>What do you feel like eating?</p>
+    </div>
 
-    <!-- データ出力場所 -->
+    <div class="main">
+        <!-- 入力場所を作成しよう -->
+        <ul>
+            <li>
+                <label for="name">日付</label> <input type="text" id="name">
+            </li>
+            <li>
+                <textarea name="" id="text" cols="50" rows="10"></textarea> </li>
 
-    <ul id="output"></ul>
+            <li>
+                <button id="send">send</button>
+            </li>
+        </ul>
+
+        <!-- データ出力場所 -->
+
+        <ul id="output"></ul>
+
+    </div>
     <!-- <ul>
     <li>
       <textarea name="" id="output" cols="30" rows="10"></textarea> </li>
