@@ -19,24 +19,49 @@
         <h1 class=title>What's for dinner?</h1>
         <p class=subtitle>What do you feel like eating?</p>
     </div>
-
+    <!-- 日曜日 -->
     <div class="main">
         <!-- 入力場所を作成しよう -->
-        <ul>
+        <ul class="list">
             <li>
-                <label for="name">日付</label> <input type="text" id="name">
+                <label for="name">Sunday</label> <input type="text" id="name">
             </li>
             <li>
-                <textarea name="" id="text" cols="50" rows="10"></textarea> </li>
+                <textarea name="" id="text" cols="55" rows="10"></textarea> </li>
+            <li>
+                <button id="send">send</button>
+            </li>
+
+        </ul>
+
+
+
+
+        <!-- データ出力場所 -->
+
+        <ul id="output"></ul>
+
+    </div>
+
+    <!-- 月曜日 -->
+    <div class="main_mon">
+        <!-- 入力場所を作成しよう -->
+        <ul class="list">
+            <li>
+                <label for="name">Monday</label> <input type="text" id="name">
+            </li>
+            <li>
+                <textarea name="" id="text" cols="55" rows="10"></textarea> </li>
 
             <li>
                 <button id="send">send</button>
             </li>
         </ul>
 
+
         <!-- データ出力場所 -->
 
-        <ul id="output"></ul>
+        <ul id="output_mon"></ul>
 
     </div>
     <!-- <ul>
@@ -57,7 +82,7 @@
     <script>
         // Your web app's Firebase configuration
         var firebaseConfig = {
-            apiKey: "AIzaSyAMK64G88Kv3p3FEQ5Tu0ExVAQr3tPwtQs",
+
             authDomain: "dinner-ap.firebaseapp.com",
             databaseURL: "https://dinner-ap.firebaseio.com",
             projectId: "dinner-ap",
@@ -88,6 +113,7 @@
         // データベースの設定を記述
 
 
+        // 日曜日
         // 送信ボタンクリック時にデータを送信する処理
         $('#send').on('click', function () {
             db.add({
@@ -122,6 +148,43 @@
             });
 
             $('#output').html(tagArray);
+        });
+
+        // 月曜日
+        // 送信ボタンクリック時にデータを送信する処理
+        $('#send').on('click', function () {
+            db.add({
+                name: $('#name_mon').val(),
+                text: $('#text_mon').val(),
+                time: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+            $('#text_mon').val('');
+        })
+
+        // データをリアルタイムに取得する処理
+        db.orderBy('time_mon', 'desc').onSnapshot(function (querySnapshot) {
+            // まずはconsole.log()で出力してデータの形を確認！
+            const dataArray = [];
+            querySnapshot.docs.forEach(function (doc) {
+                const data = {
+                    id: doc.id,
+                    data: doc.data(),
+                };
+                dataArray.push(data);
+            });
+            const tagArray = [];
+            dataArray.forEach(function (data) {
+                const tag = `
+      <li id="${data.id}">
+        <p>${data.data.name_mon}</p>
+        <p>${data.data.text_mon}</p>
+        <p>${convertFromFirestoreTimestampToDatetime(data.data.time.sec)}</p>
+        </li>
+        `;
+                tagArray.push(tag);
+            });
+
+            $('#output_mon').html(tagArray);
         });
     </script>
 </body>
