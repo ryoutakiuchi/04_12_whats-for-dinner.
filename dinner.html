@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>chatApp</title>
+    <style>
+        #output li {
+            background: #ccc;
+            width: 120px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>What's for dinner?</h1>
+    <!-- 入力場所を作成しよう -->
+    <ul>
+        <li>
+            <label for="name">日付</label> <input type="text" id="name">
+        </li>
+        <li>
+            <textarea name="" id="text" cols="30" rows="10"></textarea> </li>
+
+        <li>
+            <button id="send">send</button>
+        </li>
+    </ul>
+
+    <!-- データ出力場所 -->
+
+    <ul id="output"></ul>
+    <!-- <ul>
+    <li>
+      <textarea name="" id="output" cols="30" rows="10"></textarea> </li>
+
+    <li>
+  </ul> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 以下にfirebaseのコードを貼り付けよう -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAMK64G88Kv3p3FEQ5Tu0ExVAQr3tPwtQs",
+            authDomain: "dinner-ap.firebaseapp.com",
+            databaseURL: "https://dinner-ap.firebaseio.com",
+            projectId: "dinner-ap",
+            storageBucket: "dinner-ap.appspot.com",
+            messagingSenderId: "710885349866",
+            appId: "1:710885349866:web:eea87f8e09f898a2fe3a93"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+
+        var db = firebase.firestore().collection('dinner')
+    </script>
+
+    <script>
+        // 日時をいい感じの形式にする関数
+        function convertFromFirestoreTimestampToDatetime(timestamp) {
+            const _d = timestamp ? new Date(timestamp * 1000) : new Date();
+            const Y = _d.getFullYear();
+            const m = (_d.getMonth() + 1).toString().padStart(2, '0');
+            const d = _d.getDate().toString().padStart(2, '0');
+            const H = _d.getHours().toString().padStart(2, '0');
+            const i = _d.getMinutes().toString().padStart(2, '0');
+            const s = _d.getSeconds().toString().padStart(2, '0');
+            return `${Y}/${m}/${d} ${H}:${i}:${s}`;
+        }
+
+        // データベースの設定を記述
+
+
+        // 送信ボタンクリック時にデータを送信する処理
+        $('#send').on('click', function () {
+            db.add({
+                name: $('#name').val(),
+                text: $('#text').val(),
+                time: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+            $('#text').val('');
+        })
+
+        // データをリアルタイムに取得する処理
+        db.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
+            // まずはconsole.log()で出力してデータの形を確認！
+            const dataArray = [];
+            querySnapshot.docs.forEach(function (doc) {
+                const data = {
+                    id: doc.id,
+                    data: doc.data(),
+                };
+                dataArray.push(data);
+            });
+            const tagArray = [];
+            dataArray.forEach(function (data) {
+                const tag = `
+      <li id="${data.id}">
+        <p>${data.data.name}</p>
+        <p>${data.data.text}</p>
+        <p>${convertFromFirestoreTimestampToDatetime(data.data.time.sec)}</p>
+        </li>
+        `;
+                tagArray.push(tag);
+            });
+
+            $('#output').html(tagArray);
+        });
+    </script>
+</body>
+
+</html>
